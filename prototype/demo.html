@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Needle AdBlock · browser prototype</title>
+    <link rel="stylesheet" href="demo.css">
+    <link rel="stylesheet" href="../extension/content.css">
+  </head>
+  <body>
+    <aside id="needle-prototype-panel" data-needle-prototype-ui class="lab-panel">
+      <div class="lab-heading"><span class="needle-mark">N</span><div><h1>Needle AdBlock</h1><p>LOCAL INFERENCE / THROWAWAY PROTOTYPE</p></div><span class="prototype-tag">PROTOTYPE</span></div>
+      <div class="lab-intro"><div><h2>Can a small model tell ads from content?</h2><p>This page runs the actual Needle3 model and the extension’s page scanner. The fixtures below include paid placements and ordinary content that should remain visible.</p></div><div class="runtime-box"><span id="runtime-dot" class="dot"></span><strong id="runtime-label">Model not loaded</strong><span id="runtime-detail">No API key. Inference stays in your browser.</span></div></div>
+      <div class="lab-controls">
+        <button id="start" type="button">Load model & start scanning</button>
+        <label class="inline-control"><input id="enabled" type="checkbox"> Scanning enabled</label>
+        <label class="inline-control" for="mode">Action <select id="mode"><option value="highlight">Highlight</option><option value="remove">Remove</option></select></label>
+        <label class="inline-control threshold-control" for="threshold">Confidence <input id="threshold" type="range" min="0.30" max="0.95" step="0.05" value="0.70"><output id="threshold-value">70%</output></label>
+        <button id="rescan" class="secondary" type="button">Rescan</button>
+        <button id="restore" class="secondary" type="button">Restore page</button>
+        <button id="add" class="secondary" type="button">Add a lazy-loaded ad</button>
+      </div>
+      <p class="lab-note">The model loads from the local package. Confidence measures the model’s answer, not ad probability. Best with explicit English ad labels; editorial mentions and “not sponsored” can still be misclassified. This prototype changes page elements only; it does not block network requests. State resets on reload.</p>
+      <p id="error" class="error" role="status" hidden></p>
+      <div class="state-heading"><h3>Live state</h3><span id="summary" aria-live="polite">0 checked · 0 highlighted · 0 removed</span></div>
+      <pre id="state" tabindex="0">Preparing browser bridge…</pre>
+    </aside>
+
+    <main class="fixture-site">
+      <header class="site-header"><a class="site-wordmark" href="#top">FIELDNOTES<span>Ideas for everyday life.</span></a><nav aria-label="Magazine navigation"><a href="#stories">Stories</a><a href="#newsletter">Newsletter</a><a href="#about">About</a></nav></header>
+      <div class="fixture-intro" id="top"><span>THE FIXTURE PAGE</span><p>Six varied ads, one short calibration ad, and ordinary editorial content.</p></div>
+
+      <div class="ad-unit sponsored-content fixture-ad" data-ad-slot="calibration" data-fixture="calibration-ad">
+        <p>Sponsored. SuperVPN. Protect your connection today. Get 60% off. Shop now.</p>
+      </div>
+
+      <div id="top-ad" class="ad-banner wide-ad fixture-ad" data-ad-slot="leaderboard" data-fixture="ad">
+        <div><span class="ad-disclosure">ADVERTISEMENT</span><strong>Make room for your next big idea.</strong><p>Cloud storage for your whole team. Start your 30-day free trial.</p></div><a href="https://example.invalid/cloud?utm_source=display&utm_campaign=trial">Try CloudSpace →</a>
+      </div>
+
+      <div class="magazine-grid" id="stories">
+        <div class="story-column">
+          <article class="editorial-card" data-fixture="editorial"><div class="story-art"><span>LESS<br>SCREEN.<br>MORE SKY.</span><div class="sun"></div></div><div class="story-body"><span class="eyebrow">LIVING / 8 MIN READ</span><h2>The small pleasure of taking the long way home</h2><p>A slower route through the city reveals places we usually pass without noticing. We spoke with three walkers about finding a little space in an ordinary day.</p><a href="#article">Read the story →</a></div></article>
+          <article class="sponsored-content fixture-ad" data-sponsored="true" data-fixture="ad"><span class="ad-disclosure">SPONSORED BY FRESHBOX</span><h3>Dinner, sorted. Your first box is 50% off.</h3><p>Chef-designed recipes and fresh ingredients delivered to your door. Choose your plan and use code FRESH50 at checkout.</p><a href="https://example.invalid/freshbox?utm_medium=paid">Claim your offer →</a></article>
+          <article class="regular-story advertising-analysis" id="article" data-fixture="editorial"><span class="eyebrow">DESIGN / INDEPENDENT EDITORIAL</span><h2>Why a useful object earns its place</h2><p>Our monthly column explores the objects we repair, share, and keep. This edition looks at a twenty-year-old desk lamp and the small habits that give things a longer life.</p><p>The lesson is less about buying the perfect thing and more about learning to care for what we already have. This is an independent article, with no product offer, affiliate links, or sponsorship.</p></article>
+          <section class="newsletter" id="newsletter" data-fixture="newsletter"><span class="eyebrow">A NOTE FROM OUR EDITORS</span><h3>Good stories, once a week.</h3><p>Our free editorial newsletter collects five interesting reads. No sponsored placements.</p><form id="newsletter-form"><label class="sr-only" for="newsletter-email">Email address</label><input id="newsletter-email" type="email" placeholder="Your email address" required><button type="submit">Subscribe</button></form><p id="newsletter-message" class="form-note">Demo form — nothing is submitted or stored.</p></section>
+          <div id="lazy-container"></div>
+        </div>
+        <aside class="sidebar" aria-label="Magazine sidebar">
+          <div class="ad-unit camera-ad fixture-ad" data-ad-slot="sidebar-1" data-fixture="ad"><span class="ad-disclosure">ADVERTISEMENT</span><div class="camera-shape" aria-hidden="true"><span></span></div><h3>A fresh perspective.<br>A lighter camera.</h3><p>Meet the new Aero X. Preorder today and get a free lens kit.</p><a href="https://example.invalid/camera?utm_source=banner">Shop Aero X →</a></div>
+          <section class="editor-picks" data-fixture="navigation"><span class="eyebrow">EDITOR’S PICKS</span><h3>Worth your time</h3><a href="#article">The repair shops keeping a neighborhood alive <span>↗</span></a><a href="#article">A beginner’s guide to birdwatching <span>↗</span></a><a href="#article">Three books for a rainy afternoon <span>↗</span></a></section>
+          <div class="advertisement shoe-ad fixture-ad" data-fixture="ad"><span class="ad-disclosure">PAID PLACEMENT</span><h3>Find your<br>next stride.</h3><p>TrailOne running shoes. This weekend only: save 25% on every pair.</p><a href="https://example.invalid/shoes?campaign=paid-display">Shop the sale →</a></div>
+          <div class="native-ad fixture-ad" data-ad="true" data-fixture="ad"><span class="ad-disclosure">PARTNER OFFER</span><h3>Your next website starts here.</h3><p>Fast hosting from $4 a month. Use code START for 3 months free.</p><a href="https://example.invalid/hosting?ref=partner">Get started →</a></div>
+          <div class="ad-container fixture-ad course-ad" data-fixture="ad"><span class="ad-disclosure">PROMOTED</span><h3>Learn a little. Build a lot.</h3><p>Unlimited online design courses. Join today and get 40% off your first year.</p><a href="https://example.invalid/courses?utm_campaign=acquisition">Explore membership →</a></div>
+        </aside>
+      </div>
+      <footer id="about">FIELDNOTES is a fictional fixture for the Needle AdBlock prototype. All offers are examples; their links use a reserved, nonfunctional domain.</footer>
+    </main>
+    <script type="module" src="demo.js"></script>
+  </body>
+</html>

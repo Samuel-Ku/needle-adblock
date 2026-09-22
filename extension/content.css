@@ -1,0 +1,47 @@
+/* PROTOTYPE: local, reversible removal and inspection feedback. */
+.needle-prototype-highlight {
+  outline: 3px solid #eea940 !important;
+  outline-offset: 4px !important;
+  box-shadow: 0 0 0 7px rgb(238 169 64 / 14%) !important;
+}
+.needle-prototype-removing {
+  box-sizing: border-box !important;
+  overflow: hidden !important;
+  pointer-events: none !important;
+  outline: 2px solid #8ce8b7 !important;
+  animation: needle-prototype-remove 500ms ease both !important;
+}
+@keyframes needle-prototype-remove {
+  0% { opacity: 1; max-height: var(--needle-height); }
+  35% { opacity: .35; max-height: var(--needle-height); }
+  100% { opacity: 0; max-height: 0; margin-top: 0; margin-bottom: 0; padding-top: 0; padding-bottom: 0; }
+}
+#needle-prototype-toast {
+  all: initial;
+  position: fixed !important;
+  z-index: 2147483647 !important;
+  right: 20px !important;
+  bottom: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 18px !important;
+  padding: 13px 16px !important;
+  border: 1px solid #3d5a4c !important;
+  border-radius: 12px !important;
+  background: #15261e !important;
+  color: #e9fff3 !important;
+  box-shadow: 0 8px 30px #0003 !important;
+  font: 13px/1.4 system-ui, sans-serif !important;
+}
+#needle-prototype-toast span { color: inherit !important; font: inherit !important; }
+#needle-prototype-toast button {
+  all: initial;
+  cursor: pointer !important;
+  color: #a5f1c9 !important;
+  font: 600 12px/1.4 system-ui, sans-serif !important;
+  text-decoration: underline !important;
+}
+#needle-prototype-toast button:focus-visible { outline: 2px solid #a5f1c9 !important; outline-offset: 4px !important; }
+@media (prefers-reduced-motion: reduce) {
+  .needle-prototype-removing { animation-duration: 1ms !important; }
+}

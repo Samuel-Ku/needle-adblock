@@ -1,0 +1,14 @@
+{
+  "name": "needle-adblock-prototype",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Throwaway local Needle3 DOM classification prototype",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "prototype": "node scripts/prepare.mjs && node scripts/serve.mjs",
+    "setup": "node scripts/prepare.mjs",
+    "logic": "node scripts/prepare.mjs && node prototype/logic.mjs",
+    "check": "node scripts/check.mjs"
+  }
+}

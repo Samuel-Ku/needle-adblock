@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Needle AdBlock prototype</title>
+    <link rel="stylesheet" href="popup.css">
+  </head>
+  <body>
+    <header>
+      <div class="brand"><span class="mark" aria-hidden="true">N</span><div><h1>Needle AdBlock</h1><p>LOCAL AI · PROTOTYPE</p></div></div>
+      <label class="switch" title="Enable page scanning"><input id="enabled" type="checkbox" aria-label="Enable page scanning"><span></span></label>
+    </header>
+
+    <section class="model" aria-label="Model status">
+      <div><span id="runtime-dot" class="dot"></span><strong id="runtime-state">Connecting…</strong></div>
+      <p>Needle3 · runs in your browser · no API key</p>
+      <button id="warmup" class="text-button" type="button">Load model</button>
+    </section>
+
+    <div class="stats" aria-label="Page statistics">
+      <div><strong id="judged">0</strong><span>Checked</span></div>
+      <div><strong id="affected">0</strong><span id="affected-label">Removed</span></div>
+      <div><strong id="pending">0</strong><span>Pending</span></div>
+    </div>
+
+    <main>
+      <label class="field-heading" for="threshold">Model confidence <output id="threshold-value">70%</output></label>
+      <input id="threshold" type="range" min="0.30" max="0.95" step="0.05" value="0.70">
+      <p class="hint">Confidence in the model’s answer; not an ad probability.</p>
+
+      <label class="field-heading" for="mode">When an ad is found</label>
+      <select id="mode"><option value="remove">Remove element</option><option value="highlight">Highlight for review</option></select>
+
+      <label class="check-row"><span>Animate removal</span><input id="animation" type="checkbox"></label>
+      <label class="check-row"><span>Show page notifications</span><input id="toast" type="checkbox"></label>
+
+      <div class="actions"><button id="rescan" type="button">Rescan page</button><button id="restore" type="button" class="secondary">Restore page</button></div>
+      <p id="error" class="error" role="status" hidden></p>
+      <details><summary>Current state</summary><pre id="state">Waiting for the active tab…</pre></details>
+    </main>
+    <footer>Cosmetic filtering only. Network requests are not blocked. Settings reset when the browser session ends.</footer>
+    <script src="popup.js"></script>
+  </body>
+</html>

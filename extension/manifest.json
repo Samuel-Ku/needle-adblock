@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "Needle AdBlock — Prototype",
+  "version": "0.1.0",
+  "minimum_chrome_version": "116",
+  "description": "Experimental local ad classification with Needle3. Cosmetic DOM removal and highlighting.",
+  "permissions": ["storage", "offscreen"],
+  "background": { "service_worker": "background.js", "type": "module" },
+  "action": { "default_popup": "popup.html", "default_title": "Needle AdBlock" },
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["content.js"],
+    "css": ["content.css"],
+    "run_at": "document_idle"
+  }],
+  "content_security_policy": {
+    "extension_pages": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; object-src 'none'; connect-src 'self'; worker-src 'self'"
+  }
+}
